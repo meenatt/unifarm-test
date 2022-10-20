@@ -6,6 +6,7 @@ function App() {
   const ethereum = window.ethereum;
   const [connectedAccount, setConnectedAccount] = useState(null);
   const [number, setNumber] = useState(0);
+  const [summary, setSummary] = useState({ noOfWallets: 0, totalValue: 0 });
 
   const connectWallet = async () => {
     if (typeof ethereum !== "undefined") {
@@ -53,6 +54,7 @@ function App() {
             .connect(provider.getSigner())
             .addNum(number * PRECISION);
           await tx.wait();
+          getSummary();
           alert("Transaction successfull");
         } catch (error) {
           alert(error);
@@ -63,6 +65,20 @@ function App() {
     } else {
       alert("Enter a number");
     }
+  };
+
+  const getSummary = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const uniFarmTestContract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      ABI,
+      provider
+    );
+    const contractSummary = await uniFarmTestContract.getSummary();
+    setSummary({
+      noOfWallets: contractSummary[0].toNumber(),
+      totalValue: contractSummary[1].toNumber() / PRECISION,
+    });
   };
 
   return (
@@ -77,27 +93,43 @@ function App() {
           ? "Connect wallet"
           : truncateString(connectedAccount.toString(), 6, 3)}
       </button>
-      <div className="w-1/2 bg-slate-200 p-4 mx-6 text-black rounded-2xl shadow-lg">
-        <div className="flex flex-col space-y-4">
-          <h1 className="text-md">Enter a number</h1>
-          <form className="flex flex-col space-y-4">
-            <input
-              type="number"
-              className="flex-1 p-3 border-2 rounded-lg placeholder-grey focus:outline-none"
-              placeholder="Enter a number"
-              required
-              onChange={(event) => {
-                setNumber(event.target.value);
-              }}
-            />
+      <div className="flex flex-col space-y-4 w-1/2">
+        <div className="bg-slate-200 p-4 mx-6 text-black rounded-2xl shadow-lg">
+          <div className="flex flex-col space-y-4">
+            <h1 className="text-md">Enter a number</h1>
+            <form className="flex flex-col space-y-4">
+              <input
+                type="number"
+                className="flex-1 p-3 border-2 rounded-lg placeholder-grey focus:outline-none"
+                placeholder="Enter a number"
+                required
+                onChange={(event) => {
+                  setNumber(event.target.value);
+                }}
+              />
+              <button
+                type="submit"
+                onClick={addNum}
+                className="px-5 py-3 bg-black text-white rounded-lg hover:opacity-70 md:py-2"
+              >
+                Add Num
+              </button>
+            </form>
+          </div>
+        </div>
+        <div className="bg-slate-200 p-4 mx-6 text-black rounded-2xl shadow-lg">
+          <div className="flex flex-col space-y-4">
+            <h1 className="text-md">Summary</h1>
+            <p>Total value: {summary.totalValue}</p>
+            <p>Total number of users: {summary.noOfWallets}</p>
             <button
               type="submit"
-              onClick={addNum}
+              onClick={getSummary}
               className="px-5 py-3 bg-black text-white rounded-lg hover:opacity-70 md:py-2"
             >
-              Add Num
+              Get Summary
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>
