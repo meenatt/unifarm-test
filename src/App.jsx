@@ -1,8 +1,11 @@
+import { ethers } from "ethers";
 import { useState } from "react";
+import { CONTRACT_ADDRESS, ABI, PRECISION } from "./config";
 
 function App() {
   const ethereum = window.ethereum;
   const [connectedAccount, setConnectedAccount] = useState(null);
+  const [number, setNumber] = useState(0);
 
   const connectWallet = async () => {
     if (typeof ethereum !== "undefined") {
@@ -29,7 +32,38 @@ function App() {
     return text;
   };
 
-  const addNum = async () => {};
+  const addNum = async (event) => {
+    event.preventDefault();
+    if (number !== 0) {
+      if (ethereum.isConnected() && connectedAccount !== null) {
+        try {
+          const chainId = await ethereum.request({ method: "eth_chainId" });
+          if (chainId !== "0x13881") {
+            alert("Please connect to Polygon Mumbai Testnet");
+            return;
+          }
+
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const uniFarmTestContract = new ethers.Contract(
+            CONTRACT_ADDRESS,
+            ABI,
+            provider
+          );
+          const tx = await uniFarmTestContract
+            .connect(provider.getSigner())
+            .addNum(number * PRECISION);
+          await tx.wait();
+          alert("Transaction successfull");
+        } catch (error) {
+          alert(error);
+        }
+      } else {
+        alert("Connect your wallet");
+      }
+    } else {
+      alert("Enter a number");
+    }
+  };
 
   return (
     <div className="flex flex-col space-y-2 items-center justify-center h-screen bg-slate-50">
@@ -46,14 +80,24 @@ function App() {
       <div className="w-1/2 bg-slate-200 p-4 mx-6 text-black rounded-2xl shadow-lg">
         <div className="flex flex-col space-y-4">
           <h1 className="text-md">Enter a number</h1>
-          <input
-            type="number"
-            className="flex-1 p-3 border-2 rounded-lg placeholder-grey focus:outline-none"
-            placeholder="Enter a number"
-          />
-          <button className="px-5 py-3 bg-black text-white rounded-lg hover:opacity-70 md:py-2">
-            Add Num
-          </button>
+          <form className="flex flex-col space-y-4">
+            <input
+              type="number"
+              className="flex-1 p-3 border-2 rounded-lg placeholder-grey focus:outline-none"
+              placeholder="Enter a number"
+              required
+              onChange={(event) => {
+                setNumber(event.target.value);
+              }}
+            />
+            <button
+              type="submit"
+              onClick={addNum}
+              className="px-5 py-3 bg-black text-white rounded-lg hover:opacity-70 md:py-2"
+            >
+              Add Num
+            </button>
+          </form>
         </div>
       </div>
     </div>

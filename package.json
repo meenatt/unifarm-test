@@ -1,27 +1,47 @@
 {
   "name": "unifarm-test",
   "private": true,
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.3",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.5",
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "@nomicfoundation/solidity-analyzer": "^0.1.0",
     "@nomiclabs/hardhat-ethers": "^2.1.1",
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
     "@typechain/ethers-v5": "^10.1.0",
     "@typechain/hardhat": "^6.1.2",
     "@types/chai": "^4.3.3",
     "@types/mocha": "^9.1.1",
+    "assert": "^2.0.0",
     "autoprefixer": "^10.4.12",
+    "browserify-zlib": "^0.2.0",
     "chai": "^4.3.6",
+    "console-browserify": "^1.2.0",
+    "constants-browserify": "^1.0.0",
+    "crypto-browserify": "^3.12.0",
+    "domain-browser": "^4.22.0",
     "dotenv": "^16.0.2",
     "hardhat": "^2.12.0",
     "hardhat-gas-reporter": "^1.0.8",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
     "postcss": "^8.4.18",
+    "react-app-rewired": "^2.2.1",
     "solidity-coverage": "^0.7.21",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
     "tailwindcss": "^3.1.8",
     "ts-node": "^10.9.1",
     "typechain": "^8.1.0",
-    "typescript": "^4.8.2"
+    "typescript": "^4.8.2",
+    "url": "^0.11.0",
+    "vm-browserify": "^1.1.2"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
@@ -35,10 +55,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [
