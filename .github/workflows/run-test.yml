@@ -26,9 +26,8 @@ jobs:
       run: yarn install
 
     - name: Verify Yarn Installation
-      run: yarn --version 
+      run: yarn --version
 
     - name: Run Tests
-      run: |
-        yarn test
-        echo "Success"
+      run: yarn test
+         ### echo "Success"
