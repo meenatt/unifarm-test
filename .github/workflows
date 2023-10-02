@@ -1,0 +1,32 @@
+name: Test Yarn
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - converted_to_draft
+      - ready_for_review
+
+jobs:
+  test_job:
+    name: Running Application Test Job
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Yarn
+      run: yarn install
+
+    - name: Verify Yarn Installation
+      run: yarn --version
+
+    - name: Run Tests
+      run: yarn test --passWithNoTests
