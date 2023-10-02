@@ -1,20 +1,26 @@
 name: Application Tests
-
-run-name: ${{ github.actor }} triggered this action.
-
 on:
-  pull_request: [opened, reopened, converted_to_draft, ready_for_review]
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - converted_to_draft
+      - ready_for_review
 
 jobs:
   test_job:
-  name: Running Application test Job
-  runs-on: ubuntu-latest
+    name: Running Application Test Job
+    runs-on: ubuntu-latest
 
-  steps:
-  name: Run Test
-  - uses: actions/checkout@v4
-  run: npm test
-  run: echo "Success"
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Run Tests
+      run: |
+        npm test
+        echo "Success"
+
 
 
   # ### Deployment Job should depend on test run
