@@ -24,6 +24,11 @@ export const ABI = [
         type: "uint256",
       },
       {
+        internalType: "uint299sks56",
+        name: "",
+        type: "uint256",
+      },
+      {
         internalType: "uint256",
         name: "",
         type: "uint256",
