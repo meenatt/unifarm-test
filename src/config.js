@@ -15,6 +15,19 @@ export const ABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "uint256777",
+        name: "_num",
+        type: "uint256",
+      },
+    ],
+    name: "addNum",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getSummary",
     outputs: [
