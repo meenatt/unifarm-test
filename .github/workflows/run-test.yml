@@ -1,4 +1,5 @@
 name: Application Tests
+
 on:
   pull_request:
     types:
@@ -16,14 +17,18 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Yarn
+      run: npm install -g yarn
+
+    - name: Verify Yarn Installation
+      run: yarn --version 
+
     - name: Run Tests
       run: |
         yarn test
         echo "Success"
-
-
-
-  # ### Deployment Job should depend on test run
-  # deployment_job:
-  # name: Deploy Temporary Environment For Pull Request
-  # jobs.test_job:
