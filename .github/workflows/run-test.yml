@@ -23,7 +23,7 @@ jobs:
         node-version: '14'
 
     - name: Install Yarn
-      run: npm install -g yarn
+      run: yarn install
 
     - name: Verify Yarn Installation
       run: yarn --version 
